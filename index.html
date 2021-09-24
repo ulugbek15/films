@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel = "icon" type = "image/png" href = "./img/film.png">
+    <title>IMOVIE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Asap:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    
+    <header class="header">
+        <div class="container">
+            <h1 class="header__title">I<span class="header__title-orange">Movie</span></h1>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="films">
+            <div class="container">
+                <form class="form">
+                    <input class="input films__input-serach" type="text" placeholder="Search film ...">
+                    <div class="films__filter-wrapper">
+                        <select class="input films__select">
+                            <option class="films__option" value="All">All</option>
+                        </select>
+                        <select class="input films__filter">
+                            <option class="films__option" value="all">All</option>
+                            <option class="films__option" value="a_z">A_Z</option>
+                            <option class="films__option" value="z_a">Z_A</option>
+                            <option class="films__option" value="old_new">Old_New</option>
+                            <option class="films__option" value="new_old">New_Old</option>
+                        </select>
+                    </div>
+                    <button class="films__btn-header">Search</button>
+                </form>
+                <ul class="films__card-wrapper"></ul>
+
+
+                <template id="template">
+                    <li class="films__card">
+                        <img class="films__img" src="https://picsum.photos/300" width="300" height="250"><h2 class="films__card-title">Shazam!</h2>
+                        <time class="films__release-date" datetime="1.19.1970">1.19.1970</time>
+                        <button class="films__btn">Show more</button>
+                    </li>
+                </template>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <h3 class="footer__copyright">&copy 2021</h3>
+        </div>
+    </footer>
+    
+    
+    <script src="./js/films.js"></script>
+    <script src="./js/util.js"></script>
+    <script src="./js/script.js"></script>
+</body>
+</html>
