@@ -239,3 +239,13 @@ img{
         margin-right: 25px;
     }
 }
+@media screen and (max-width: 430px){
+    .container{
+        width: 370px;
+    }
+    .films__card{
+        width: 152px;
+        max-width: 100%;
+        margin-right: 25px;
+    }
+}
