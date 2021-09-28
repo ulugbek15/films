@@ -1,10 +1,34 @@
 const elList = document.querySelector('.films__card-wrapper');
+
+// Form elements
 const elForm = document.querySelector('.form');
 const elInputSearch = selectElem('.films__input-serach', elForm);
 const elSelect = selectElem('.films__select', elForm);
 const elFilter = selectElem('.films__filter', elForm);
+
+//Modal Elements
+const elModal = selectElem('.modal');
+const elModalContent = selectElem('.modal__content', elModal);
+const elModalCloseBtn= selectElem('.modal__close-btn', elModal);
+const elModalImg = selectElem('.modal__img', elModal);
+const elModalTitle = selectElem('.modal__title', elModal);
+const elModalGenreList = selectElem('.genre__list', elModal);
+const elModalDescription = selectElem('.modal__description', elModal);
+
+//Template Element
 const elTemplate = document.querySelector('#template').content
 
+elModalCloseBtn.addEventListener('click', () =>{
+    elModal.classList.remove('modal-active')
+})
+elModal.addEventListener('click', evt =>{
+    const modalId = evt.target.dataset.modal
+    if(modalId == 1){
+        elModal.classList.remove('modal-active')    
+    }
+})
+
+// Movies Render
 function renderMovies(filmsArr, element){
     element.innerHTML = null;
     
@@ -15,6 +39,26 @@ function renderMovies(filmsArr, element){
         selectElem('.films__card-title', cloneTemplate).textContent = film.title
         selectElem('.films__release-date', cloneTemplate).textContent = normalizeDate(film.release_date)
         selectElem('.films__release-date', cloneTemplate).datetime = normalizeDate(film.release_date)
+        const elModalBtn = selectElem('.films__btn', cloneTemplate)
+        elModalBtn.dataset.id = film.id
+        elModalBtn.dataset.title = film.title
+        
+        elModalBtn.addEventListener('click', (evt) =>{
+            elModal.classList.add('modal-active')
+            const filmId = evt.target.dataset.id;
+            let result = filmsArr.find(elem => elem.id === filmId)
+            elModalImg.setAttribute('src', result.poster)
+            elModalImg.setAttribute('width', 300)
+            elModalImg.setAttribute('height', 350)
+            elModalTitle.textContent = result.title
+            elModalDescription.textContent = result.overview
+            elModalGenreList.innerHTML = null
+            result.genres.forEach(elem =>{
+                let newLi = createDOM('LI')
+                newLi.textContent = elem
+                elModalGenreList.appendChild(newLi)
+            })
+        })
         
         element.appendChild(cloneTemplate);
     })
@@ -22,6 +66,8 @@ function renderMovies(filmsArr, element){
 
 renderMovies(films, elList);
 
+
+//Genres Render
 function renderGenres(filmArr, element){
     
     let result = [];
@@ -57,6 +103,7 @@ elForm.addEventListener('submit', (e) =>{
     const filteredFilms = films.filter((film) => film.title.match(regex));
     
     let foundFilms = [];
+
     
     if(selectValue === 'All'){
         foundFilms = filteredFilms
@@ -64,156 +111,32 @@ elForm.addEventListener('submit', (e) =>{
         foundFilms = filteredFilms.filter(film => film.genres.includes(selectValue))
     }
 
-    
+    const sortAlph = foundFilms.sort((a, b) =>{
+        if(a.title > b.title){
+            return 1
+        }else if(a.title < b.title){
+            return -1
+        }else{
+            return 0
+        }
+    });
+
+    const sortDate = foundFilms.sort((a, b) => a.release_date - b.release_date);
+
+    // Sort films
     if(filterValue === 'all'){
-        foundFilms
+         foundFilms
     }else if(filterValue === 'a_z'){
-        foundFilms.sort((a, b) =>{
-            if(a.title > b.title){
-                return 1
-            }else if(a.title < b.title){
-                return -1
-            }else{
-                return 0
-            }
-        })
+        sortAlph
     }else if(filterValue === 'z_a'){
-        foundFilms.sort((a, b) =>{
-            if(a.title > b.title){
-                return -1
-            }else if(a.title < b.title){
-                return 1
-            }else{
-                return 0
-            }
-        })
+        sortAlph.reverse()
     }else if(filterValue === 'old_new'){
-        foundFilms.sort((a, b) =>{
-            if(a.release_date > b.release_date){
-                return -1
-            }else if(a.release_date < b.release_date){
-                return 1
-            }else{
-                return 0
-            }
-        })
+        sortDate
     }else if(filterValue === 'new_old'){
-        foundFilms.sort((a, b) =>{
-            if(a.release_date > b.release_date){
-                return 1
-            }else if(a.release_date < b.release_date){
-                return -1
-            }else{
-                return 0
-            }
-        })
+        sortDate.reverse()
     }
     
     elInputSearch.value = null;
     
     renderMovies(foundFilms, elList);
 });
-
-// function renderMovies(filmsArr, element){
-
-//     element.innerHTML = null
-
-// filmsArr.map((film) =>{
-//     const cloneTemplate = elTemplate.cloneNode(true)
-
-// document.querySelector('')
-//         let newLi = document.createElement('li');
-//         let newImg = document.createElement('img');
-//         let newTitle = document.createElement('h2');
-//         let newGenerList = document.createElement('ul');
-//         let newTime = document.createElement('time');
-//         let newButton = document.createElement('button');
-
-//         newLi.setAttribute('class', 'films__card');
-//         newImg.setAttribute('class', 'films__img');
-//         newGenerList.setAttribute('class', 'films__genre-list')
-//         newImg.setAttribute('src', film.poster);
-//         newTitle.setAttribute('class', 'films__card-title');
-//         newTitle.textContent = film.title;
-//         newButton.setAttribute('class', 'films__btn');
-//         newButton.textContent = 'Show more';
-
-//         let date = new Date(film.release_date);
-//         let month = date.getMonth() +1;
-//         let day = date.getDate();
-//         let year = date.getFullYear();
-
-//         newTime.textContent = month + '.' + day + '.' + year
-//         newTime.setAttribute('datetime', month + '.' + day + '.' + year);
-
-//         // function renderGenres(fimArr, element){
-//         //     fimArr.map(film => {
-//         //         let newGenerListItem = document.createElement('li');
-//         //         newGenerListItem.setAttribute('class', 'films__genre');
-//         //         newGenerListItem.textContent = film;
-//         //         element.appendChild(newGenerListItem)
-//         //     })
-//         // }
-
-//         // renderGenres(film.genres, newGenerList)
-
-//         newLi.appendChild(newImg)
-//         newLi.appendChild(newTitle)
-//         // newLi.appendChild(newGenerList)
-//         newLi.appendChild(newTime)
-//         newLi.appendChild(newButton)
-
-//         element.appendChild(cloneTemplate)
-//     })
-// }
-
-// renderMovies(films, elList)
-
-// function renderGenresSelect(film, element){
-
-//     const result = [];
-
-//     film.forEach(element => {
-//         element.genres.forEach(genre =>{
-//             if(!result.includes(genre)){
-//                 result.push(genre)
-//             }
-//         })
-//     });
-
-//     result.forEach(genre =>{
-//         const newOption = document.createElement('option');
-//         newOption.value = genre;
-//         newOption.textContent = genre;
-//         element.appendChild(newOption);
-//     })
-// }
-
-// renderGenresSelect(films, elSelect)
-
-
-// elForm.addEventListener('submit', (e) =>{
-//     e.preventDefault()
-
-//     let inputValue = elInputSearch.value.trim();
-//     let selectGenresValue = elSelect.value.trim();
-//     let selectFilters = elFilter.value.trim();
-
-//     console.log(selectFilters)
-
-//     let regex = new RegExp(inputValue, 'gi');
-
-//     let filteredFilms = films.filter(film => film.title.match(regex));
-
-//     let foundFilms = [];
-
-//     if(selectGenresValue === 'All'){
-//         foundFilms = filteredFilms
-//     }else{
-//         foundFilms = filteredFilms.filter(film => film.genres.includes(selectGenresValue))
-//     }
-
-//     elInputSearch.value = null;
-
-//     renderMovies(foundFilms, elList)
-// })

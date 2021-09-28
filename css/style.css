@@ -53,11 +53,14 @@ img{
     padding: 0;
 }
 .films__card{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     width: 250px;
     padding: 15px 10px;
     border-radius: 7px;
     margin-right: 40px;
-    height: 100%;
+    height: 470px;
     background-color: #D5BFBF;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     transition: .3s ease all;
@@ -118,6 +121,44 @@ img{
     background-color: #316B83;
     font-weight: 600;
     color: #fff; 
+}
+.modal{
+    background-color: rgba(0,0,0,0.7);
+    position: fixed;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.modal-active{
+    display: flex;
+}
+.modal__wrapper{
+    border-radius: 7px;
+    background-color: #316B83;
+    width: 700px;
+    max-width: 100%;
+}
+.modal__wrapper{
+    display: flex;
+}
+.modal__content{
+    padding: 10px;
+}
+.modal__close-btn{
+    display: block;
+    margin-left: auto;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: bold;
 }
 
 @media screen and (max-width: 1248px){
@@ -247,5 +288,30 @@ img{
         width: 152px;
         max-width: 100%;
         margin-right: 25px;
+    }
+    .modal__wrapper{
+        background-color: #6D8299;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 250px;
+        max-height: 450px;
+        
+    }
+    .modal__content{
+        font-size: 14px;
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    .modal__img{
+        height: 100px;
+        width: 150px;
+    }
+    .modal__close-btn{
+        width: 100%;
+    }
+    .modal__description, .genre__list{
+        font-size: 12px;
     }
 }
